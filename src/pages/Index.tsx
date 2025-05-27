@@ -8,7 +8,8 @@ import { IoNonHoMai } from "@/components/games/IoNonHoMai";
 import { PowerHour } from "@/components/games/PowerHour";
 import { Quarters } from "@/components/games/Quarters";
 import { FlipCup } from "@/components/games/FlipCup";
-import { Settings } from "lucide-react";
+import { Settings as SettingsIcon } from "lucide-react";
+import { Settings } from "@/components/Settings";
 
 const games = [
   {
@@ -50,7 +51,7 @@ const games = [
 
 const Index = () => {
   const [selectedGame, setSelectedGame] = useState<string | null>(null);
-  const [showMenu, setShowMenu] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
   const renderGame = () => {
     switch (selectedGame) {
@@ -86,6 +87,23 @@ const Index = () => {
     );
   }
 
+  if (showSettings) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+        <div className="p-4">
+          <Button 
+            onClick={() => setShowSettings(false)}
+            variant="outline"
+            className="mb-4 bg-white/10 border-white/20 text-white hover:bg-white/20"
+          >
+            ← Torna alla Lobby
+          </Button>
+          <Settings />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       {/* Header */}
@@ -114,8 +132,12 @@ const Index = () => {
       {/* Bottom Navigation */}
       <div className="fixed bottom-0 left-0 right-0 bg-black/30 backdrop-blur-lg border-t border-white/10">
         <div className="flex justify-center py-3">
-          <Button variant="ghost" className="flex flex-col gap-1 text-white/70 hover:text-white hover:bg-white/10">
-            <Settings className="w-5 h-5" />
+          <Button 
+            variant="ghost" 
+            className="flex flex-col gap-1 text-white/70 hover:text-white hover:bg-white/10"
+            onClick={() => setShowSettings(true)}
+          >
+            <SettingsIcon className="w-5 h-5" />
             <span className="text-xs">Impostazioni</span>
           </Button>
         </div>
