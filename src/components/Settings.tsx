@@ -1,5 +1,4 @@
 
-import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -7,16 +6,37 @@ import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Volume2, VolumeX, Vibrate, VibrateOff, Sun, Moon, Timer } from "lucide-react";
+import { useSettings } from "@/contexts/SettingsContext";
 
 export const Settings = () => {
-  const [soundEnabled, setSoundEnabled] = useState(true);
-  const [vibrationEnabled, setVibrationEnabled] = useState(true);
-  const [volume, setVolume] = useState([70]);
-  const [brightness, setBrightness] = useState([80]);
-  const [darkMode, setDarkMode] = useState(true);
-  const [powerHourDuration, setPowerHourDuration] = useState("60");
-  const [safetyReminder, setSafetyReminder] = useState(true);
-  const [maxDrinks, setMaxDrinks] = useState([10]);
+  const {
+    soundEnabled,
+    setSoundEnabled,
+    vibrationEnabled,
+    setVibrationEnabled,
+    volume,
+    setVolume,
+    brightness,
+    setBrightness,
+    darkMode,
+    setDarkMode,
+    powerHourDuration,
+    setPowerHourDuration,
+    safetyReminder,
+    setSafetyReminder,
+    maxDrinks,
+    setMaxDrinks,
+    playSound,
+    triggerVibration
+  } = useSettings();
+
+  const handleVolumeTest = () => {
+    playSound('success');
+  };
+
+  const handleVibrationTest = () => {
+    triggerVibration([100, 50, 100]);
+  };
 
   return (
     <div className="space-y-6 pb-8">
@@ -47,15 +67,25 @@ export const Settings = () => {
 
           {soundEnabled && (
             <div className="space-y-2">
-              <Label className="text-white/80 text-sm">Volume</Label>
+              <div className="flex items-center justify-between">
+                <Label className="text-white/80 text-sm">Volume</Label>
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  onClick={handleVolumeTest}
+                  className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                >
+                  Test
+                </Button>
+              </div>
               <Slider
-                value={volume}
-                onValueChange={setVolume}
+                value={[volume]}
+                onValueChange={(value) => setVolume(value[0])}
                 max={100}
                 step={1}
                 className="w-full"
               />
-              <div className="text-xs text-white/60 text-right">{volume[0]}%</div>
+              <div className="text-xs text-white/60 text-right">{volume}%</div>
             </div>
           )}
 
@@ -64,11 +94,22 @@ export const Settings = () => {
               {vibrationEnabled ? <Vibrate className="w-4 h-4" /> : <VibrateOff className="w-4 h-4" />}
               Vibrazione
             </Label>
-            <Switch 
-              id="vibration"
-              checked={vibrationEnabled}
-              onCheckedChange={setVibrationEnabled}
-            />
+            <div className="flex items-center gap-2">
+              <Button 
+                size="sm" 
+                variant="outline" 
+                onClick={handleVibrationTest}
+                disabled={!vibrationEnabled}
+                className="bg-white/10 border-white/20 text-white hover:bg-white/20 disabled:opacity-50"
+              >
+                Test
+              </Button>
+              <Switch 
+                id="vibration"
+                checked={vibrationEnabled}
+                onCheckedChange={setVibrationEnabled}
+              />
+            </div>
           </div>
         </div>
       </Card>
@@ -96,13 +137,13 @@ export const Settings = () => {
           <div className="space-y-2">
             <Label className="text-white/80 text-sm">Luminosità schermo</Label>
             <Slider
-              value={brightness}
-              onValueChange={setBrightness}
+              value={[brightness]}
+              onValueChange={(value) => setBrightness(value[0])}
               max={100}
               step={1}
               className="w-full"
             />
-            <div className="text-xs text-white/60 text-right">{brightness[0]}%</div>
+            <div className="text-xs text-white/60 text-right">{brightness}%</div>
           </div>
         </div>
       </Card>
@@ -150,14 +191,14 @@ export const Settings = () => {
           <div className="space-y-2">
             <Label className="text-white/80 text-sm">Limite massimo sorsi per sessione</Label>
             <Slider
-              value={maxDrinks}
-              onValueChange={setMaxDrinks}
+              value={[maxDrinks]}
+              onValueChange={(value) => setMaxDrinks(value[0])}
               min={5}
               max={20}
               step={1}
               className="w-full"
             />
-            <div className="text-xs text-white/60 text-right">{maxDrinks[0]} sorsi</div>
+            <div className="text-xs text-white/60 text-right">{maxDrinks} sorsi</div>
           </div>
 
           <div className="bg-orange-500/20 border border-orange-500/30 rounded-lg p-3 mt-4">

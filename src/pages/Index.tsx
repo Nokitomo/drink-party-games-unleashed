@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,7 @@ import { Quarters } from "@/components/games/Quarters";
 import { FlipCup } from "@/components/games/FlipCup";
 import { Settings as SettingsIcon } from "lucide-react";
 import { Settings } from "@/components/Settings";
+import { useSettings } from "@/contexts/SettingsContext";
 
 const games = [
   {
@@ -52,6 +54,26 @@ const games = [
 const Index = () => {
   const [selectedGame, setSelectedGame] = useState<string | null>(null);
   const [showSettings, setShowSettings] = useState(false);
+  const { playSound, triggerVibration } = useSettings();
+
+  const handleGameSelect = (gameId: string) => {
+    playSound('click');
+    triggerVibration(100);
+    setSelectedGame(gameId);
+  };
+
+  const handleSettingsClick = () => {
+    playSound('click');
+    triggerVibration(50);
+    setShowSettings(true);
+  };
+
+  const handleBackToLobby = () => {
+    playSound('click');
+    triggerVibration(50);
+    setSelectedGame(null);
+    setShowSettings(false);
+  };
 
   const renderGame = () => {
     switch (selectedGame) {
@@ -75,7 +97,7 @@ const Index = () => {
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
         <div className="p-4">
           <Button 
-            onClick={() => setSelectedGame(null)}
+            onClick={handleBackToLobby}
             variant="outline"
             className="mb-4 bg-white/10 border-white/20 text-white hover:bg-white/20"
           >
@@ -92,7 +114,7 @@ const Index = () => {
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
         <div className="p-4">
           <Button 
-            onClick={() => setShowSettings(false)}
+            onClick={handleBackToLobby}
             variant="outline"
             className="mb-4 bg-white/10 border-white/20 text-white hover:bg-white/20"
           >
@@ -123,7 +145,7 @@ const Index = () => {
             <GameCard
               key={game.id}
               game={game}
-              onSelect={() => setSelectedGame(game.id)}
+              onSelect={() => handleGameSelect(game.id)}
             />
           ))}
         </div>
@@ -135,7 +157,7 @@ const Index = () => {
           <Button 
             variant="ghost" 
             className="flex flex-col gap-1 text-white/70 hover:text-white hover:bg-white/10"
-            onClick={() => setShowSettings(true)}
+            onClick={handleSettingsClick}
           >
             <SettingsIcon className="w-5 h-5" />
             <span className="text-xs">Impostazioni</span>
