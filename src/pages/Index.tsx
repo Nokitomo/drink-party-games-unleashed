@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,7 +8,7 @@ import { IoNonHoMai } from "@/components/games/IoNonHoMai";
 import { PowerHour } from "@/components/games/PowerHour";
 import { Quarters } from "@/components/games/Quarters";
 import { FlipCup } from "@/components/games/FlipCup";
-import { Settings, User, BarChart3, HelpCircle } from "lucide-react";
+import { Settings } from "lucide-react";
 
 const games = [
   {
@@ -114,22 +113,10 @@ const Index = () => {
 
       {/* Bottom Navigation */}
       <div className="fixed bottom-0 left-0 right-0 bg-black/30 backdrop-blur-lg border-t border-white/10">
-        <div className="flex justify-around py-3">
+        <div className="flex justify-center py-3">
           <Button variant="ghost" className="flex flex-col gap-1 text-white/70 hover:text-white hover:bg-white/10">
             <Settings className="w-5 h-5" />
             <span className="text-xs">Impostazioni</span>
-          </Button>
-          <Button variant="ghost" className="flex flex-col gap-1 text-white/70 hover:text-white hover:bg-white/10">
-            <User className="w-5 h-5" />
-            <span className="text-xs">Profilo</span>
-          </Button>
-          <Button variant="ghost" className="flex flex-col gap-1 text-white/70 hover:text-white hover:bg-white/10">
-            <BarChart3 className="w-5 h-5" />
-            <span className="text-xs">Statistiche</span>
-          </Button>
-          <Button variant="ghost" className="flex flex-col gap-1 text-white/70 hover:text-white hover:bg-white/10">
-            <HelpCircle className="w-5 h-5" />
-            <span className="text-xs">Aiuto</span>
           </Button>
         </div>
       </div>
