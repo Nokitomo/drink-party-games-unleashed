@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,13 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				party: {
+					purple: '#6366f1',
+					orange: '#f97316',
+					pink: '#ec4899',
+					blue: '#3b82f6',
+					green: '#10b981'
 				}
 			},
 			borderRadius: {
@@ -84,11 +92,44 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'bounce-gentle': {
+					'0%, 100%': {
+						transform: 'translateY(0)'
+					},
+					'50%': {
+						transform: 'translateY(-10px)'
+					}
+				},
+				'flip-card': {
+					'0%': {
+						transform: 'rotateY(0deg)'
+					},
+					'50%': {
+						transform: 'rotateY(90deg)'
+					},
+					'100%': {
+						transform: 'rotateY(0deg)'
+					}
+				},
+				'coin-flip': {
+					'0%': {
+						transform: 'rotateX(0deg) translateY(0)'
+					},
+					'50%': {
+						transform: 'rotateX(1800deg) translateY(-100px)'
+					},
+					'100%': {
+						transform: 'rotateX(3600deg) translateY(0)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'bounce-gentle': 'bounce-gentle 2s ease-in-out infinite',
+				'flip-card': 'flip-card 0.6s ease-in-out',
+				'coin-flip': 'coin-flip 2s ease-in-out'
 			}
 		}
 	},
