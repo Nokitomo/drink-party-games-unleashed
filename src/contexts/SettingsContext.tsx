@@ -57,43 +57,84 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   }, [darkMode]);
 
+  // Debug vibration support on component mount
+  useEffect(() => {
+    console.log('Vibration API support:', 'vibrate' in navigator);
+    console.log('Navigator vibrate function:', navigator.vibrate);
+    console.log('User agent:', navigator.userAgent);
+  }, []);
+
   // Funzione per riprodurre suoni
   const playSound = (soundType: 'click' | 'success' | 'warning') => {
-    if (!soundEnabled) return;
+    if (!soundEnabled) {
+      console.log('Sound disabled, skipping sound:', soundType);
+      return;
+    }
 
-    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
+    try {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
 
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
 
-    // Imposta il volume basato sulle impostazioni
-    gainNode.gain.setValueAtTime(volume / 100 * 0.1, audioContext.currentTime);
+      // Imposta il volume basato sulle impostazioni
+      gainNode.gain.setValueAtTime(volume / 100 * 0.1, audioContext.currentTime);
 
-    // Frequenze diverse per tipi di suono diversi
-    const frequencies = {
-      click: 800,
-      success: 1000,
-      warning: 400
-    };
+      // Frequenze diverse per tipi di suono diversi
+      const frequencies = {
+        click: 800,
+        success: 1000,
+        warning: 400
+      };
 
-    oscillator.frequency.setValueAtTime(frequencies[soundType], audioContext.currentTime);
-    oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(frequencies[soundType], audioContext.currentTime);
+      oscillator.type = 'sine';
 
-    oscillator.start();
-    oscillator.stop(audioContext.currentTime + 0.1);
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + 0.1);
 
-    // Cleanup
-    oscillator.onended = () => {
-      audioContext.close();
-    };
+      // Cleanup
+      oscillator.onended = () => {
+        audioContext.close();
+      };
+
+      console.log('Sound played:', soundType, 'at volume:', volume);
+    } catch (error) {
+      console.error('Error playing sound:', error);
+    }
   };
 
   // Funzione per attivare la vibrazione
   const triggerVibration = (pattern: number | number[] = 200) => {
-    if (!vibrationEnabled || !navigator.vibrate) return;
-    navigator.vibrate(pattern);
+    console.log('Vibration triggered with pattern:', pattern);
+    console.log('Vibration enabled:', vibrationEnabled);
+    console.log('Navigator vibrate available:', 'vibrate' in navigator);
+    
+    if (!vibrationEnabled) {
+      console.log('Vibration disabled in settings');
+      return;
+    }
+
+    if (!('vibrate' in navigator)) {
+      console.log('Vibration API not supported');
+      return;
+    }
+
+    try {
+      const result = navigator.vibrate(pattern);
+      console.log('Vibration result:', result);
+      
+      // Fallback per dispositivi che non supportano navigator.vibrate
+      if (!result) {
+        console.log('Vibration failed, trying alternative method');
+        // Prova con un pattern diverso
+        navigator.vibrate([100]);
+      }
+    } catch (error) {
+      console.error('Error triggering vibration:', error);
+    }
   };
 
   const value = {
